@@ -9,6 +9,10 @@ export default function PageSelect() {
 		{
 			label: "List topics",
 			value: "list-topics"
+		},
+		{
+			label: "List groups",
+			value: "list-groups"
 		}
 	]
 	

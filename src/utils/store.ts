@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-type Page = "home" | "list-topics";
+type Page = "home" | "list-topics" | "list-groups";
 
 interface State {
   page: Page,
