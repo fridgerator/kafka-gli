@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Box } from 'ink';
+import { Text, Box, useInput } from 'ink';
 import { useStore } from './utils/store.js';
 import { FullScreen } from './utils/fullscreen.js';
 import PageSelect from './components/page-select.js';
@@ -10,6 +10,13 @@ const IS_FULLSCREEN = true; // false only for debugging
 
 export default function App() {
 	const page = useStore((state) => state.page);
+	const historyBack = useStore((state) => state.historyBack);
+
+	useInput((_input, key) => {
+		if (key.escape) {
+			return historyBack()
+		}
+	})
 
 	const renderPage = () => {
 		switch (page) {
