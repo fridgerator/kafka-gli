@@ -3,17 +3,17 @@ import SelectInput from 'ink-select-input';
 import { useStore } from '../utils/store.js';
 import { Box } from 'ink';
 
-export default function PageSelect() {
+export default function Home() {
 	const setPage = useStore((state) => state.setPage)
 
 	const menu = [
 		{
-			label: "List topics",
-			value: "list-topics"
+			label: "Topics",
+			value: "topics"
 		},
 		{
-			label: "List groups",
-			value: "list-groups"
+			label: "Consumer groups",
+			value: "consumer-groups"
 		}
 	]
 
