@@ -1,13 +1,38 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import SelectInput from 'ink-select-input';
 import { KafkaGliClient } from '../utils/kafka-gli-client.js';
-import { Box, Text } from 'ink';
+import { Box, Text, useFocus, useFocusManager } from 'ink';
 import { EachMessagePayload } from 'kafkajs';
+
+interface TopicSelectorProps {
+  groups: { label: string, value: string }[]
+  onSelect: any
+}
+const TopicSelector = (props: TopicSelectorProps) => {
+  const { isFocused } = useFocus();
+
+  return <Box borderStyle={"single"} width="100%" borderColor={isFocused ? "blue" : "white"}>
+    <SelectInput items={props.groups} onSelect={props.onSelect} isFocused={isFocused} />
+  </Box>
+}
+
+const KafkaMessages = (props: {messages: string[]}) => {
+  const { isFocused } = useFocus();
+
+  return <Box borderStyle={"single"} width="100%" borderColor={isFocused ? "blue" : "white"}>
+    <Text>{JSON.stringify(props.messages, null, 2)}</Text>
+  </Box>
+}
 
 export default function ListTopics() {
   const [selectedTopic, setSelectedTopic] = useState<string | undefined>();
   const [topics, setTopics] = useState<{ label: string, value: string }[]>([]);
   const [messages, setMessages] = useState<string[]>([])
+  const {focusNext} = useFocusManager();
+
+	useEffect(() => {
+		focusNext();
+	}, []);
 
   const onSelect = async (item: { label: string, value: string }) => {
     setSelectedTopic(item.value);
@@ -28,7 +53,7 @@ export default function ListTopics() {
       const consumerClient = await KafkaGliClient.getConsumerClient();
       // if consumer is already running "susbscribe" will throw an exception, always stop before subscribing again
       await consumerClient?.stop();
-      await consumerClient?.subscribe({ topics: [selectedTopic], fromBeginning: true })
+      await consumerClient?.subscribe({ topics: [selectedTopic] })
       consumerClient?.run({
         eachMessage: async (msg) => {
           addMessage(msg)
@@ -52,26 +77,16 @@ export default function ListTopics() {
     getTopics();
   }, [])
 
-  const renderMessages = () => {
-    return <>
-      {messages.map((message, i) => (
-        <Box key={i} width="100%" height="2">
-          <Text>{message}</Text>
-        </Box>
-      ))}
-    </>
-  }
-
   return (
     <Box flexDirection="column">
       <Box height="10%">
-        <Box borderStyle="single" width="100%">
-          <SelectInput items={topics} onSelect={onSelect} />
+        <Box width="100%">
+          <TopicSelector groups={topics} onSelect={onSelect} />
         </Box>
       </Box>
       <Box height="90%" overflowY='hidden'>
-        <Box borderStyle="single" width="100%" flexDirection='column'>
-          {renderMessages()}
+        <Box width="100%" overflowY='hidden'>
+          <KafkaMessages messages={messages} />
         </Box>
       </Box>
     </Box>
