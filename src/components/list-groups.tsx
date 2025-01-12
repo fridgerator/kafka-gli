@@ -3,6 +3,7 @@ import SelectInput from 'ink-select-input';
 import { KafkaGliClient } from '../utils/kafka-gli-client.js';
 import { Box, Text, useFocus, useFocusManager } from 'ink';
 import { FetchOffsetsPartition, GroupDescription } from 'kafkajs';
+import Scrollable from './scrollable.js';
 
 type offsets = {
   topic: string;
@@ -16,7 +17,7 @@ interface GroupSelectorProps {
 const GroupSelector = (props: GroupSelectorProps) => {
   const { isFocused } = useFocus();
 
-  return <Box borderStyle={"single"} width="100%" borderColor={isFocused ? "blue" : "white"}>
+  return <Box borderStyle="round" width="100%" borderColor={isFocused ? "blue" : "white"}>
     <SelectInput items={props.groups} onSelect={props.onSelect} isFocused={isFocused} />
   </Box>
 }
@@ -24,16 +25,20 @@ const GroupSelector = (props: GroupSelectorProps) => {
 const GroupDescription = (props: {description: any}) => {
   const { isFocused } = useFocus();
 
-  return <Box borderStyle={"single"} width="100%" borderColor={isFocused ? "blue" : "white"} overflow='hidden'>
-    <Text>{JSON.stringify(props.description, null, 2)}</Text>
+  return <Box borderStyle="round" width="100%" borderColor={isFocused ? "blue" : "white"} overflow='hidden'>
+    <Scrollable isFocused={isFocused}>
+      <Text>{JSON.stringify(props.description, null, 2)}</Text>
+    </Scrollable>
   </Box>
 }
 
 const GroupOffsets = (props: {offsets: any}) => {
   const { isFocused } = useFocus();
 
-  return <Box borderStyle={"single"} width="100%" borderColor={isFocused ? "blue" : "white"} overflow='hidden'>
-    <Text>{JSON.stringify(props.offsets, null, 2)}</Text>
+  return <Box borderStyle="round" width="100%" borderColor={isFocused ? "blue" : "white"} overflow='hidden'>
+    <Scrollable isFocused={isFocused}>
+      <Text>{JSON.stringify(props.offsets, null, 2)}</Text>
+    </Scrollable>
   </Box>
 }
 

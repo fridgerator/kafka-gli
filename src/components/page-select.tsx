@@ -1,6 +1,7 @@
 import React from 'react';
 import SelectInput from 'ink-select-input';
 import { useStore } from '../utils/store.js';
+import { Box } from 'ink';
 
 export default function PageSelect() {
 	const setPage = useStore((state) => state.setPage)
@@ -20,5 +21,7 @@ export default function PageSelect() {
 		setPage(item.value);
 	}
 
-	return <SelectInput items={menu} onSelect={onSelect} />
+	return <Box height="10%" width="100%" borderColor="blue" borderStyle="round">
+		<SelectInput items={menu} onSelect={onSelect} />
+	</Box>
 }
