@@ -4,3 +4,6 @@
 
 - fullscreen
   - https://github.com/vadimdemedes/ink/issues/263
+
+- scrolling
+  - https://github.com/vadimdemedes/ink/issues/432

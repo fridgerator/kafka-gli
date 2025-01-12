@@ -24,7 +24,7 @@ const GroupSelector = (props: GroupSelectorProps) => {
 const GroupDescription = (props: {description: any}) => {
   const { isFocused } = useFocus();
 
-  return <Box borderStyle={"single"} width="100%" borderColor={isFocused ? "blue" : "white"}>
+  return <Box borderStyle={"single"} width="100%" borderColor={isFocused ? "blue" : "white"} overflow='hidden'>
     <Text>{JSON.stringify(props.description, null, 2)}</Text>
   </Box>
 }
@@ -32,7 +32,7 @@ const GroupDescription = (props: {description: any}) => {
 const GroupOffsets = (props: {offsets: any}) => {
   const { isFocused } = useFocus();
 
-  return <Box borderStyle={"single"} width="100%" borderColor={isFocused ? "blue" : "white"}>
+  return <Box borderStyle={"single"} width="100%" borderColor={isFocused ? "blue" : "white"} overflow='hidden'>
     <Text>{JSON.stringify(props.offsets, null, 2)}</Text>
   </Box>
 }
@@ -72,16 +72,14 @@ export default function ListGroups() {
 
   return (
     <Box flexDirection="column">
-      <Box height="10%">
-        <Box width="100%">
-          <GroupSelector groups={groups} onSelect={onSelect} />
-        </Box>
+      <Box height="10%" width="100%">
+        <GroupSelector groups={groups} onSelect={onSelect} />
       </Box>
       <Box height="90%">
-        <Box width="30%" overflowY="hidden">
+        <Box width="30%">
           <GroupDescription description={selectedGroupDescription} />
         </Box>
-        <Box width="70%" overflowY="hidden">
+        <Box width="70%">
           <GroupOffsets offsets={groupOffsets} />
         </Box>
       </Box>
