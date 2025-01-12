@@ -5,7 +5,7 @@ import { useStore } from '../utils/store.js';
 export default function PageSelect() {
 	const setPage = useStore((state) => state.setPage)
 
-  const menu = [
+	const menu = [
 		{
 			label: "List topics",
 			value: "list-topics"
@@ -15,7 +15,7 @@ export default function PageSelect() {
 			value: "list-groups"
 		}
 	]
-	
+
 	const onSelect = (item: any) => {
 		setPage(item.value);
 	}

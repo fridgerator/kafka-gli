@@ -6,20 +6,20 @@ import { EachMessagePayload } from 'kafkajs';
 
 export default function ListTopics() {
   const [selectedTopic, setSelectedTopic] = useState<string | undefined>();
-  const [topics, setTopics] = useState<{label: string, value: string}[]>([]);
+  const [topics, setTopics] = useState<{ label: string, value: string }[]>([]);
   const [messages, setMessages] = useState<string[]>([])
 
-  const onSelect = async (item: {label: string, value: string}) => {
+  const onSelect = async (item: { label: string, value: string }) => {
     setSelectedTopic(item.value);
   }
 
   const addMessage = useCallback(
     (payload: EachMessagePayload) => {
-    setMessages(prevMessages => [
-      ...prevMessages,
-      payload.message.value!.toString()
-    ])
-  }, [])
+      setMessages(prevMessages => [
+        ...prevMessages,
+        payload.message.value!.toString()
+      ])
+    }, [])
 
   useEffect(() => {
     if (!selectedTopic) return;
@@ -45,7 +45,7 @@ export default function ListTopics() {
       const topicsList = await adminClient?.listTopics();
       if (!topicsList) return;
       setTopics(
-        topicsList.map((t) => ({label: t, value: t}))
+        topicsList.map((t) => ({ label: t, value: t }))
       );
     }
 
