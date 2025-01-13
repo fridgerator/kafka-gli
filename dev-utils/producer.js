@@ -1,4 +1,6 @@
 import { Kafka } from 'kafkajs'
+import { faker } from '@faker-js/faker';
+import { get } from 'http';
 
 const kafka = new Kafka({
   clientId: "kafkaCli",
@@ -13,6 +15,37 @@ const sleep = (ms) => {
   })
 }
 
+const getData = () => {
+  return {
+    "data": [{
+      "type": faker.word.words(),
+      "id": faker.number.int(),
+      "attributes": {
+        "title": faker.book.title(),
+        "author": faker.book.author(),
+        "created": faker.date.anytime(),
+        "updated": faker.date.anytime()
+      },
+      "relationships": {
+        "author": {
+          "data": {"id": "42", "type": "people"}
+        }
+      }
+    }],
+    "included": [
+      {
+        "type": "people",
+        "id": faker.number.int(),
+        "attributes": {
+          "name": faker.person.firstName(),
+          "age": faker.number.int(10, 70),
+          "gender": faker.person.gender()
+        }
+      }
+    ]
+  }
+}
+
 const main = async () => {
   const producer = kafka.producer()
 
@@ -24,11 +57,11 @@ const main = async () => {
     await producer.send({
       topic: 'test-topic',
       messages: [
-        { value: `Hello KafkaJS user! ${++x}` },
+        { value: JSON.stringify(getData()) },
       ],
     })
-    console.log(`sent ${x}`)
-    await sleep(1000)
+    console.log(`sent ${++x}`)
+    await sleep(5000)
   }
 }
 

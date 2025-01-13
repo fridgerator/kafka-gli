@@ -10,7 +10,7 @@ import { KafkaGliClient } from '../utils/kafka-gli-client.js';
 export default function Topics() {
   const [topics, setTopics] = useState<SelectInputItem[]>([]);
   const [selectedTopic, setSelectedTopic] = useState<string | undefined>();
-  const [messages, setMessages] = useState<string[]>([])
+  const [messages, setMessages] = useState<any[]>([])
   const {focusNext} = useFocusManager();
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function Topics() {
       (payload: EachMessagePayload) => {
         setMessages(prevMessages => [
           ...prevMessages,
-          payload.message.value!.toString()
+          payload
         ])
       }, [])
 
