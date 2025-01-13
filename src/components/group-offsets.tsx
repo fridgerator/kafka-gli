@@ -1,13 +1,14 @@
 import React from 'react';
-import { Box, Text, useFocus } from 'ink';
+import { Box, useFocus } from 'ink';
 import Scrollable from '../components/scrollable.js';
+import Table from './table.js'
 
-export default function GroupOffsets(props: {offsets: any}) {
+export default function GroupOffsets(props: {offsets: any[]}) {
   const { isFocused } = useFocus();
 
   return <Box borderStyle="round" width="100%" borderColor={isFocused ? "blue" : "white"} overflow='hidden'>
     <Scrollable isFocused={isFocused}>
-      <Text>{JSON.stringify(props.offsets, null, 2)}</Text>
+      <Table data={props.offsets} />
     </Scrollable>
   </Box>
 }
