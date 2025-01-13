@@ -10,7 +10,7 @@ import GroupOffsets from '../components/group-offsets.js';
 interface KafkaMessagesTableData {
   topic: string
   groupId: string
-  offset?: string
+  topicOffset?: string
   groupOffset: string
   lag: number
 }
@@ -57,14 +57,13 @@ export default function ConsumerGroups() {
         tableData.push({
           topic,
           groupId: consumerGroupId,
-          offset: topicOffset,
+          topicOffset: topicOffset,
           groupOffset: part.offset,
           lag: parseInt(topicOffset || "") - parseInt(part.offset)
         })
       })
     })
 
-    // TODO: topic selector
     setGroupOffsets(tableData);
 
     // for now just set consume group metadata
