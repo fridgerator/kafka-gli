@@ -4,7 +4,8 @@ import { Box, useInput } from 'ink';
 interface ScrollabelProps {
   distance?: number
   children: any
-  isFocused: boolean
+  isFocused: boolean,
+  flexDirection?: "column" | "row" | "row-reverse" | "column-reverse" | undefined
 }
 
 const Scrollable = (props: ScrollabelProps) => {
@@ -24,7 +25,7 @@ const Scrollable = (props: ScrollabelProps) => {
     }
   })
 
-  return <Box marginTop={top}>
+  return <Box marginTop={top} flexDirection={props.flexDirection}>
     {props.children}
   </Box>
 }

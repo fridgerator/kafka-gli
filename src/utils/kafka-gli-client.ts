@@ -49,4 +49,13 @@ export class KafkaGliClient {
     await this.consumer?.connect();
     return this.consumer;
   }
+
+  static gracefulShutdown = async () => {
+    if (this.consumer) await this.consumer.disconnect();
+    if (this.producer) await this.producer.disconnect();
+    if (this.admin) await this.producer?.disconnect();
+  }
 }
+
+process.on('SIGTERM', KafkaGliClient.gracefulShutdown);
+process.on('SIGINT', KafkaGliClient.gracefulShutdown);

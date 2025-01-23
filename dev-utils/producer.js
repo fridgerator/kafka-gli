@@ -1,11 +1,11 @@
 import { Kafka } from 'kafkajs'
 import { faker } from '@faker-js/faker';
-import { get } from 'http';
 
 const kafka = new Kafka({
   clientId: "kafkaCli",
   brokers: ["localhost:9092", "localhost:9093", "localhost:9094"]
 })
+const producer = kafka.producer()
 
 const sleep = (ms) => {
   return new Promise((resolve) => {
@@ -47,13 +47,12 @@ const getData = () => {
 }
 
 const main = async () => {
-  const producer = kafka.producer()
-
   await producer.connect()
+  await sleep(2000)
 
   let x = 0;
 
-  while (true) {
+  while (x < 20) {
     await producer.send({
       topic: 'test-topic',
       messages: [
@@ -61,8 +60,17 @@ const main = async () => {
       ],
     })
     console.log(`sent ${++x}`)
-    await sleep(5000)
+    await sleep(500)
   }
+
+  await producer.disconnect();
 }
+
+const gracefulShutdown = async () => {
+  await producer.disconnect();
+}
+
+process.on('SIGTERM', gracefulShutdown);
+process.on('SIGINT', gracefulShutdown);
 
 main()
